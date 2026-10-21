@@ -151,7 +151,6 @@ function renderGames() {
       <div class="cover-wrap">
         <img src="${escapeHTML(game.cover)}" alt="${escapeHTML(game.name)} cover" loading="lazy">
         <span class="score-badge">★ ${game.score.toFixed(1)}/5</span>
-        <span class="image-placeholder" hidden>Upload a cover image<br><small>${escapeHTML(game.cover)}</small></span>
       </div>
       <div class="card-content">
         <h3>${escapeHTML(game.name)}</h3>
