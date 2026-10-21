@@ -70,6 +70,19 @@ const games = [
     thoughts: "A lovely option when you want to slow down, build a routine, and enjoy a cozy game at your own pace."
   }
 ];
+function populateReviewGameOptions() {
+  const select = document.getElementById("reviewGame");
+  if (!select) return;
+
+  select.innerHTML = '<option value="">Select a game</option>';
+
+  games.forEach(game => {
+    const option = document.createElement("option");
+    option.value = game.name;
+    option.textContent = game.name;
+    select.appendChild(option);
+  });
+}
 
 const STORAGE_KEYS = {
   reviews: "baiiself-community-reviews-v1",
