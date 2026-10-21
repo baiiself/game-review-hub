@@ -252,6 +252,19 @@ function closeZoom() {
   zoomImage.removeAttribute("src");
 }
 
+function populateReviewGameOptions() {
+  const select = document.querySelector("#reviewGame");
+
+  select.innerHTML = `
+    <option value="">Select a game</option>
+    ${games.map(game => `
+      <option value="${escapeHTML(game.name)}">
+        ${escapeHTML(game.name)}
+      </option>
+    `).join("")}
+  `;
+}
+
 function renderCommunityReviews() {
   const feed = $("#communityFeed");
   const reviews = readLocal(STORAGE_KEYS.reviews).slice().reverse();
@@ -390,6 +403,7 @@ try {
   }
 } catch {}
 
+populateReviewGameOptions();
 renderGames();
 renderCommunityReviews();
 renderSuggestions();
