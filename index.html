@@ -72,8 +72,10 @@
           <label for="reviewerName">Your name or nickname</label>
           <input id="reviewerName" name="reviewerName" maxlength="40" placeholder="e.g. Baii" required>
 
-          <label for="reviewGame">Game title</label>
-          <input id="reviewGame" name="reviewGame" maxlength="80" placeholder="Which game did you play?" required>
+          <label for="reviewGame">Choose a game</label>
+            <select id="reviewGame" name="reviewGame" required>
+              <option value="">Select a game</option>
+            </select>
 
           <label for="reviewScore">Your rating</label>
           <select id="reviewScore" name="reviewScore" required>
