@@ -159,33 +159,35 @@ function renderGames() {
     return;
   }
 
-  gameGrid.innerHTML = filtered.map(game => `
-    <article class="game-card">
-      <div class="cover-wrap">
-        <img src="${escapeHTML(game.cover)}" alt="${escapeHTML(game.name)} cover" loading="lazy">
-        <span class="score-badge">★ ${game.score.toFixed(1)}/5</span>
-        <span class="image-placeholder" hidden>Upload a cover image<br><small>${escapeHTML(game.cover)}</small></span>
-      </div>
-      <div class="card-content">
-        <h3>${escapeHTML(game.name)}</h3>
-        <div class="game-genre">${escapeHTML(game.genre)}</div>
-        ${ratingHTML(game.score)}
-        <p class="game-description">${escapeHTML(game.shortDescription)}</p>
-        <button class="review-button" type="button" data-review-game="${escapeHTML(game.id)}">View Review →</button>
-      </div>
-    </article>`).join("");
+gameGrid.innerHTML = filtered.map(game => `
+  <article class="game-card">
+    <div class="cover-wrap">
+      <img
+        src="${game.cover}"
+        alt="${escapeHTML(game.name)} cover"
+        loading="eager"
+        onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').hidden=false;"
+      >
+      <span class="score-badge">★ ${game.score.toFixed(1)}/5</span>
+      <span class="image-placeholder" hidden>
+        Image failed to load
+        <small>${escapeHTML(game.cover)}</small>
+      </span>
+    </div>
 
-  gameGrid.querySelectorAll(".cover-wrap img").forEach(img => {
-    img.addEventListener("error", () => {
-      img.hidden = true;
-      img.nextElementSibling.nextElementSibling.hidden = false;
-    }, { once: true });
-  });
+    <div class="card-content">
+      <h3>${escapeHTML(game.name)}</h3>
+      <div class="game-genre">${escapeHTML(game.genre)}</div>
+      ${ratingHTML(game.score)}
+      <p class="game-description">${escapeHTML(game.shortDescription)}</p>
+      <button class="review-button" type="button"
+        data-review-game="${escapeHTML(game.id)}">
+        View Review →
+      </button>
+    </div>
+  </article>
+`).join("");
 
-  gameGrid.querySelectorAll("[data-review-game]").forEach(button => {
-    button.addEventListener("click", () => openReview(button.dataset.reviewGame));
-  });
-}
 
 function getGalleryImages(game) {
   return [
