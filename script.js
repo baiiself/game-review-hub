@@ -188,6 +188,12 @@ gameGrid.innerHTML = filtered.map(game => `
   </article>
 `).join("");
 
+  gameGrid.querySelectorAll("[data-review-game]").forEach(button => {
+    button.addEventListener("click", () => {
+      openReview(button.dataset.reviewGame);
+    });
+  });
+}
 
 function getGalleryImages(game) {
   return [
