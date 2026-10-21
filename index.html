@@ -2,945 +2,1150 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#eaf4ff">
-  <title>BaiiSelf | Game Review Hub</title>
-
-  <style>
-    :root {
-      --blue: #5796e8;
-      --navy: #234e88;
-      --pale: #eaf4ff;
-      --white: #ffffff;
-      --text: #243650;
-      --muted: #71839b;
-      --border: #dce9f8;
-      --gold: #f5b942;
-      --card: #ffffff;
-      --page: #f7fbff;
-      --shadow: 0 8px 24px rgba(35, 78, 136, .09);
-    }
-
-    body.dark {
-      --text: #edf4ff;
-      --muted: #a7bad5;
-      --border: #344967;
-      --card: #19283d;
-      --page: #101b2c;
-      --pale: #203751;
-      --white: #19283d;
-      --shadow: 0 8px 24px rgba(0, 0, 0, .2);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, "Noto Sans Thai", sans-serif;
-      background: var(--page);
-      color: var(--text);
-      transition: background .2s, color .2s;
-    }
-
-    button, input, select { font: inherit; }
-
-    button {
-      cursor: pointer;
-      border: 0;
-    }
-
-    header {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .nav {
-      max-width: 1150px;
-      margin: auto;
-      padding: 15px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .logo {
-      color: var(--navy);
-      font-weight: 800;
-      font-size: 25px;
-      text-decoration: none;
-    }
-
-    body.dark .logo { color: #9ccaff; }
-
-    .logo span { color: var(--blue); }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .theme-button, .secondary-button {
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: var(--pale);
-      color: var(--navy);
-      font-weight: 700;
-    }
-
-    body.dark .theme-button,
-    body.dark .secondary-button { color: #d8e9ff; }
-
-    .hero {
-      max-width: 1150px;
-      margin: 28px auto 20px;
-      padding: 34px 24px;
-    }
-
-    .hero-panel {
-      padding: 38px 30px;
-      border-radius: 24px;
-      background: linear-gradient(125deg, #eaf4ff, #c9e1ff);
-      position: relative;
-      overflow: hidden;
-    }
-
-    body.dark .hero-panel {
-      background: linear-gradient(125deg, #203751, #263e60);
-    }
-
-    .hero-panel::after {
-      content: "✿";
-      position: absolute;
-      right: 30px;
-      top: -30px;
-      font-size: 140px;
-      color: rgba(87, 150, 232, .18);
-    }
-
-    .hero h1 {
-      color: var(--navy);
-      font-size: clamp(28px, 5vw, 43px);
-      margin: 0 0 12px;
-      position: relative;
-      z-index: 1;
-    }
-
-    body.dark .hero h1 { color: #d8e9ff; }
-
-    .hero p {
-      max-width: 570px;
-      line-height: 1.8;
-      margin: 0;
-      position: relative;
-      z-index: 1;
-    }
-
-    .section {
-      max-width: 1150px;
-      margin: 0 auto;
-      padding: 0 24px 45px;
-    }
-
-    .section-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .section-heading h2 { margin: 0; }
-
-    .filters {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 22px;
-    }
-
-    .filters input, .filters select {
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      outline-color: var(--blue);
-    }
-
-    .filters input {
-      flex: 1;
-      min-width: 180px;
-    }
-
-    .filters select { min-width: 155px; }
-
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
-      gap: 22px;
-    }
-
-    .game-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform .2s;
-    }
-
-    .game-card:hover { transform: translateY(-4px); }
-
-    .cover-wrap {
-      position: relative;
-      aspect-ratio: 16 / 10;
-      background: var(--pale);
-      overflow: hidden;
-    }
-
-    .cover-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .category-badge {
-      position: absolute;
-      left: 12px;
-      top: 12px;
-      padding: 6px 10px;
-      border-radius: 20px;
-      color: #234e88;
-      background: rgba(255, 255, 255, .92);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .game-info { padding: 17px; }
-
-    .game-info h3 {
-      margin: 0 0 10px;
-      font-size: 19px;
-    }
-
-    .game-info p {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-      min-height: 44px;
-      margin: 0 0 12px;
-    }
-
-    .rating {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 8px 0 15px;
-      flex-wrap: wrap;
-    }
-
-    .stars {
-      display: inline-flex;
-      align-items: center;
-      color: var(--gold);
-      letter-spacing: 1px;
-      font-size: 18px;
-      white-space: nowrap;
-    }
-
-    .star {
-      display: inline-block;
-      position: relative;
-    }
-
-    .star.half {
-      background: linear-gradient(90deg, var(--gold) 50%, #c8d2df 50%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .rating-number {
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .review-button {
-      width: 100%;
-      border-radius: 12px;
-      padding: 12px;
-      background: var(--blue);
-      color: white;
-      font-weight: 700;
-      transition: background .2s;
-    }
-
-    .review-button:hover { background: var(--navy); }
-
-    .empty {
-      padding: 35px;
-      text-align: center;
-      color: var(--muted);
-      grid-column: 1 / -1;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      font-size: 13px;
-    }
-
-    /* Review modal */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 30;
-      padding: 20px;
-      background: rgba(10, 25, 45, .72);
-      overflow-y: auto;
-      align-items: flex-start;
-      justify-content: center;
-    }
-
-    .modal.open { display: flex; }
-
-    .modal-content {
-      position: relative;
-      width: min(850px, 100%);
-      margin: auto;
-      padding: 25px;
-      border-radius: 20px;
-      background: var(--card);
-      box-shadow: 0 15px 50px rgba(0, 0, 0, .25);
-    }
-
-    .close-button {
-      position: absolute;
-      right: 15px;
-      top: 15px;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--pale);
-      color: var(--text);
-      font-size: 22px;
-      z-index: 2;
-    }
-
-    .review-title {
-      padding-right: 40px;
-      margin: 3px 0 8px;
-      font-size: 27px;
-    }
-
-    .review-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .review-description {
-      line-height: 1.8;
-      color: var(--muted);
-      white-space: pre-line;
-    }
-
-    .gallery {
-      position: relative;
-      margin: 20px 0;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #0c1727;
-    }
-
-    .gallery img {
-      display: block;
-      width: 100%;
-      height: min(440px, 60vw);
-      min-height: 220px;
-      object-fit: contain;
-      cursor: zoom-in;
-    }
-
-    .gallery-label {
-      position: absolute;
-      left: 12px;
-      top: 12px;
-      padding: 7px 11px;
-      border-radius: 10px;
-      color: white;
-      background: rgba(10, 25, 45, .75);
-      font-size: 12px;
-      z-index: 1;
-    }
-
-    .gallery-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .9);
-      color: #234e88;
-      font-size: 23px;
-      z-index: 1;
-    }
-
-    .gallery-arrow.prev { left: 12px; }
-    .gallery-arrow.next { right: 12px; }
-
-    .gallery-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .gallery-dots {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      flex: 1;
-    }
-
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #b7c7da;
-      padding: 0;
-    }
-
-    .dot.active { background: var(--blue); }
-
-    .image-count {
-      color: var(--muted);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    /* Image zoom */
-    .zoom-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      background: rgba(0, 0, 0, .92);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      cursor: zoom-out;
-    }
-
-    .zoom-overlay.open { display: flex; }
-
-    .zoom-overlay img {
-      max-width: 100%;
-      max-height: 90vh;
-      object-fit: contain;
-    }
-
-    @media (max-width: 600px) {
-      .nav { padding: 12px 16px; }
-      .logo { font-size: 21px; }
-      .hero { padding: 20px 16px; }
-      .hero-panel { padding: 28px 20px; }
-      .section { padding: 0 16px 35px; }
-      .modal { padding: 10px; }
-      .modal-content { padding: 18px; }
-      .review-title { font-size: 23px; }
-      .gallery img { height: 58vw; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#eaf4ff">
+<title>BaiiSelf | Game Review Hub</title>
+
+<style>
+:root {
+  --blue: #5796e8;
+  --navy: #234e88;
+  --light-blue: #eaf4ff;
+  --pale-blue: #f5f9ff;
+  --white: #ffffff;
+  --text: #263b57;
+  --muted: #71839b;
+  --border: #dce9f8;
+  --card: #ffffff;
+  --gold: #f5b942;
+  --shadow: 0 5px 20px rgba(45, 91, 145, .09);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, "Tahoma", sans-serif;
+  background: var(--pale-blue);
+  color: var(--text);
+  line-height: 1.65;
+  transition: background .25s, color .25s;
+}
+
+body.dark {
+  --light-blue: #1a2c43;
+  --pale-blue: #101c2c;
+  --white: #1a2a3d;
+  --text: #e5efff;
+  --muted: #a4b5cc;
+  --border: #30465f;
+  --card: #1a2a3d;
+  --navy: #a8cbff;
+  --shadow: 0 5px 20px rgba(0, 0, 0, .18);
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.navbar {
+  max-width: 1200px;
+  margin: auto;
+  padding: 14px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+
+.logo {
+  color: var(--blue);
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -.7px;
+}
+
+.logo span {
+  color: var(--navy);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.nav-links a {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nav-links a:hover {
+  color: var(--blue);
+}
+
+.theme-button {
+  border: 1px solid var(--border);
+  background: var(--light-blue);
+  color: var(--text);
+  padding: 7px 12px;
+  border-radius: 20px;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 65px 20px 60px;
+  text-align: center;
+  background: linear-gradient(135deg, #eaf4ff, #d9eaff, #f8fbff);
+}
+
+body.dark .hero {
+  background: linear-gradient(135deg, #1a2c43, #243d5a, #17263a);
+}
+
+.hero::before,
+.hero::after {
+  content: "✿";
+  position: absolute;
+  color: #91baf0;
+  opacity: .5;
+  font-size: 90px;
+}
+
+.hero::before {
+  left: 7%;
+  top: 12px;
+  transform: rotate(-20deg);
+}
+
+.hero::after {
+  right: 8%;
+  bottom: 0;
+  transform: rotate(25deg);
+}
+
+.hero h1 {
+  position: relative;
+  margin: 0 0 12px;
+  color: var(--navy);
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.25;
+}
+
+.hero p {
+  max-width: 600px;
+  margin: 0 auto 24px;
+  color: var(--muted);
+}
+
+.primary-button {
+  display: inline-block;
+  background: var(--blue);
+  color: white;
+  border: 0;
+  padding: 11px 24px;
+  border-radius: 24px;
+  font-weight: bold;
+  transition: transform .2s, background .2s;
+}
+
+.primary-button:hover {
+  background: var(--navy);
+  transform: translateY(-2px);
+}
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 42px 22px 65px;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.section-heading h2 {
+  color: var(--navy);
+  margin: 0 0 6px;
+  font-size: 29px;
+}
+
+.section-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.search-wrap {
+  max-width: 520px;
+  margin: 0 auto 20px;
+}
+
+.search-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 28px;
+  padding: 12px 19px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(87, 150, 232, .13);
+}
+
+.categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 30px;
+}
+
+.category-button {
+  padding: 7px 15px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.category-button.active,
+.category-button:hover {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 23px;
+}
+
+.game-card {
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(45, 91, 145, .15);
+}
+
+.cover-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--light-blue);
+  aspect-ratio: 4 / 3;
+}
+
+.cover-wrap img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+}
+
+.game-card:hover .cover-wrap img {
+  transform: scale(1.04);
+}
+
+.score-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, .95);
+  color: #76530a;
+  border-radius: 20px;
+  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px #00000012;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.card-content h3 {
+  margin: 0 0 5px;
+  color: var(--navy);
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.game-genre {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 9px 0;
+}
+
+.rating-stars {
+  display: inline-flex;
+  color: var(--gold);
+  letter-spacing: 1px;
+  font-size: 17px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.rating-stars .half {
+  background: linear-gradient(90deg, var(--gold) 50%, #c5d8ee 50%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rating-number {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.game-description {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 8px 0 14px;
+  min-height: 42px;
+}
+
+.review-button {
+  width: 100%;
+  border: 1px solid var(--blue);
+  background: transparent;
+  color: var(--blue);
+  padding: 9px;
+  border-radius: 22px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.review-button:hover {
+  color: white;
+  background: var(--blue);
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 10px;
+  color: var(--muted);
+}
+
+.about {
+  margin-top: 70px;
+  padding: 35px 25px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.about h2 {
+  color: var(--navy);
+  margin-top: 0;
+}
+
+.about p {
+  color: var(--muted);
+  max-width: 650px;
+  margin: auto;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 20px;
+  color: var(--muted);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  background: var(--white);
+}
+
+/* Review modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(10, 24, 42, .72);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-panel {
+  background: var(--card);
+  color: var(--text);
+  width: 100%;
+  max-width: 760px;
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  position: relative;
+  padding: 26px;
+}
+
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  border: 0;
+  background: var(--light-blue);
+  color: var(--text);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 23px;
+  z-index: 2;
+}
+
+.modal-title {
+  padding-right: 35px;
+  margin: 0 0 4px;
+  color: var(--navy);
+  font-size: 27px;
+}
+
+.modal-genre {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.modal-rating {
+  margin: 10px 0 18px;
+}
+
+.gallery {
+  position: relative;
+  background: #0b1420;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 16px 0 10px;
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  height: 360px;
+  object-fit: contain;
+  cursor: zoom-in;
+}
+
+.gallery-label {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  background: rgba(10, 20, 35, .78);
+  color: white;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 16px;
+}
+
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: white;
+  background: rgba(10, 20, 35, .7);
+  font-size: 23px;
+}
+
+.gallery-arrow:hover {
+  background: var(--blue);
+}
+
+.gallery-arrow.prev {
+  left: 12px;
+}
+
+.gallery-arrow.next {
+  right: 12px;
+}
+
+.gallery-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.gallery-counter {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.gallery-dots {
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.gallery-dot {
+  width: 9px;
+  height: 9px;
+  border: 0;
+  border-radius: 50%;
+  background: #bdcde0;
+  padding: 0;
+}
+
+.gallery-dot.active {
+  background: var(--blue);
+  transform: scale(1.2);
+}
+
+.modal-description {
+  color: var(--muted);
+}
+
+.modal-subtitle {
+  color: var(--navy);
+  margin: 20px 0 8px;
+  font-size: 17px;
+}
+
+.pros-cons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.pros-box,
+.cons-box {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px 15px;
+}
+
+.pros-box h4 {
+  color: #3a9b78;
+  margin: 0 0 7px;
+}
+
+.cons-box h4 {
+  color: #d58b60;
+  margin: 0 0 7px;
+}
+
+.pros-box ul,
+.cons-box ul {
+  padding-left: 20px;
+  margin: 0;
+  font-size: 13px;
+}
+
+.play-note {
+  background: var(--light-blue);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 18px;
+  font-size: 14px;
+}
+
+.zoom-view {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .93);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: zoom-out;
+}
+
+.zoom-view.open {
+  display: flex;
+}
+
+.zoom-view img {
+  max-width: 100%;
+  max-height: 92vh;
+  object-fit: contain;
+}
+
+.zoom-close {
+  position: fixed;
+  top: 18px;
+  right: 22px;
+  color: white;
+  background: transparent;
+  border: 0;
+  font-size: 35px;
+}
+
+@media (max-width: 1000px) {
+  .game-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .nav-links {
+    gap: 13px;
+    flex-wrap: wrap;
+  }
+
+  .game-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+  }
+
+  main {
+    padding: 30px 14px 45px;
+  }
+
+  .card-content {
+    padding: 12px;
+  }
+
+  .card-content h3 {
+    font-size: 15px;
+  }
+
+  .game-description {
+    min-height: 0;
+  }
+
+  .modal-panel {
+    padding: 20px 15px;
+  }
+
+  .gallery img {
+    height: 250px;
+  }
+
+  .pros-cons {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .game-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cover-wrap {
+    aspect-ratio: 16 / 9;
+  }
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <div class="nav">
-      <a class="logo" href="#">Baii<span>Self</span> ✿</a>
-      <div class="nav-right">
-        <button class="theme-button" id="themeToggle" type="button">
-          ☾ Dark Mode
+
+<header>
+  <nav class="navbar">
+    <a class="logo" href="#">Baii<span>Self</span> ✿</a>
+
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#games">Game Reviews</a>
+      <a href="#about">About</a>
+      <button class="theme-button" id="themeButton" type="button">
+        ☾ Dark Mode
+      </button>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <h1>Welcome to BaiiSelf ✿</h1>
+  <p>
+    A little space for games, personal reviews, and discovering
+    new worlds. Find a game that feels like you.
+  </p>
+  <a class="primary-button" href="#games">Explore Games ♡</a>
+</section>
+
+<main>
+  <section id="games">
+    <div class="section-heading">
+      <h2>Game Reviews ✿</h2>
+      <p>Discover games and find your next adventure.</p>
+    </div>
+
+    <div class="search-wrap">
+      <input
+        class="search-input"
+        id="searchInput"
+        type="search"
+        placeholder="Search for a game..."
+        aria-label="Search games"
+      >
+    </div>
+
+    <div class="categories" id="categories">
+      <button class="category-button active" data-category="All">All Games</button>
+      <button class="category-button" data-category="RPG">RPG</button>
+      <button class="category-button" data-category="Action">Action</button>
+      <button class="category-button" data-category="Adventure">Adventure</button>
+      <button class="category-button" data-category="Simulation">Simulation</button>
+      <button class="category-button" data-category="Cozy">Cozy</button>
+    </div>
+
+    <div class="game-grid" id="gameGrid"></div>
+  </section>
+
+  <section class="about" id="about">
+    <h2>About BaiiSelf ♡</h2>
+    <p>
+      BaiiSelf is my personal space for sharing game reviews,
+      exploring different worlds, and keeping track of the games
+      I enjoy. I hope you find something you love here, too.
+    </p>
+    <p style="margin-top: 12px;">Made with ♡ and a little blue magic.</p>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 BaiiSelf. Made with ♡</p>
+</footer>
+
+<!-- Review window -->
+<div class="modal" id="reviewModal" aria-hidden="true">
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="close-button" id="closeModal" aria-label="Close" type="button">×</button>
+
+    <h2 class="modal-title" id="modalTitle"></h2>
+    <div class="modal-genre" id="modalGenre"></div>
+    <div class="modal-rating" id="modalRating"></div>
+
+    <div class="gallery">
+      <img id="galleryImage" src="" alt="Game screenshot">
+
+      <span class="gallery-label" id="galleryLabel">Cover</span>
+
+      <button class="gallery-arrow prev" id="prevImage" type="button" aria-label="Previous image">‹</button>
+      <button class="gallery-arrow next" id="nextImage" type="button" aria-label="Next image">›</button>
+    </div>
+
+    <div class="gallery-footer">
+      <span class="gallery-counter" id="galleryCounter">1 / 4</span>
+      <div class="gallery-dots" id="galleryDots"></div>
+    </div>
+
+    <h3 class="modal-subtitle">About the Game</h3>
+    <p class="modal-description" id="modalDescription"></p>
+
+    <div class="pros-cons">
+      <div class="pros-box">
+        <h4>♡ Pros</h4>
+        <ul id="modalPros"></ul>
+      </div>
+
+      <div class="cons-box">
+        <h4>△ Things to Consider</h4>
+        <ul id="modalCons"></ul>
+      </div>
+    </div>
+
+    <div class="play-note">
+      <strong>✿ Baii's Thoughts</strong>
+      <p id="modalThoughts" style="margin-bottom:0;"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Full-size image viewer -->
+<div class="zoom-view" id="zoomView" aria-label="Zoomed image">
+  <button class="zoom-close" id="zoomClose" type="button" aria-label="Close image">×</button>
+  <img id="zoomImage" src="" alt="Full-size game image">
+</div>
+
+<script>
+const games = [
+  {
+    id: "elden-ring",
+    name: "Elden Ring",
+    genre: "Action RPG",
+    categories: ["RPG", "Action", "Adventure"],
+    score: 4.5,
+    cover: "images/elden-ring/cover.jpg",
+    screenshots: [
+      "images/elden-ring/scene-1.jpg",
+      "images/elden-ring/scene-2.jpg",
+      "images/elden-ring/scene-3.jpg"
+    ],
+    description: "Explore a vast fantasy world, discover hidden places, and face challenging enemies in an open-world action RPG.",
+    shortDescription: "Explore a vast world full of secrets and challenging battles.",
+    pros: ["Beautiful world design", "Freedom to explore", "Deep combat and builds"],
+    cons: ["Can be very challenging", "Some quests are hard to follow"],
+    thoughts: "A great choice for players who enjoy exploration, discovery, and overcoming difficult challenges."
+  },
+  {
+    id: "genshin-impact",
+    name: "Genshin Impact",
+    genre: "Open-World RPG",
+    categories: ["RPG", "Action", "Adventure"],
+    score: 4.5,
+    cover: "images/genshin impact/genshin-impact-cover.jpg",
+    screenshots: [
+      "images/genshin impact/scene-1.jpg",
+      "images/genshin impact/scene-2.jpg",
+      "images/genshin impact/scene-3.jpg"
+    ],
+    description: "Travel across Teyvat, meet different characters, solve puzzles, and explore a colorful fantasy world.",
+    shortDescription: "A colorful fantasy adventure with exploration and characters.",
+    pros: ["Beautiful scenery", "Large world to explore", "Many playable characters"],
+    cons: ["Progress can take time", "Some content uses gacha mechanics"],
+    thoughts: "A fun game for players who enjoy collecting characters, exploring beautiful places, and following a fantasy story."
+  },
+  {
+    id: "minecraft",
+    name: "Minecraft",
+    genre: "Sandbox / Survival",
+    categories: ["Adventure", "Simulation", "Cozy"],
+    score: 5,
+    cover: "images/minecraft/cover.jpg",
+    screenshots: [
+      "images/minecraft/scene-1.jpg",
+      "images/minecraft/scene-2.jpg",
+      "images/minecraft/scene-3.jpg"
+    ],
+    description: "Build anything you can imagine, gather resources, explore new places, or survive in a world made of blocks.",
+    shortDescription: "Build, explore, and create your own world.",
+    pros: ["Creative freedom", "Many ways to play", "Great with friends"],
+    cons: ["Can feel directionless", "Some mechanics take time to learn"],
+    thoughts: "A flexible game where you can relax, build something beautiful, or set your own challenges."
+  },
+  {
+    id: "wuthering-waves",
+    name: "Wuthering Waves",
+    genre: "Open-World Action RPG",
+    categories: ["RPG", "Action", "Adventure"],
+    score: 4.5,
+    cover: "images/wuthering waves/wuthering-waves-cover.jpg",
+    screenshots: [
+      "images/wuthering waves/scene-1.jpg",
+      "images/wuthering waves/scene-2.jpg",
+      "images/wuthering waves/scene-3.jpg"
+    ],
+    description: "Explore a mysterious world, master fast-paced combat, and meet Resonators on a journey through Solaris-3.",
+    shortDescription: "A stylish action RPG with fast combat and exploration.",
+    pros: ["Fluid combat", "Expressive character designs", "Enjoyable movement and exploration"],
+    cons: ["The story can feel complicated", "Requires time to learn combat systems"],
+    thoughts: "Worth trying if you enjoy action combat, character collection, and exploring a mysterious world."
+  },
+  {
+    id: "stardew-valley",
+    name: "Stardew Valley",
+    genre: "Farming Simulation",
+    categories: ["Simulation", "Cozy", "Adventure"],
+    score: 4.5,
+    cover: "images/stardew-valley/cover.jpg",
+    screenshots: [
+      "images/stardew-valley/scene-1.jpg",
+      "images/stardew-valley/scene-2.jpg",
+      "images/stardew-valley/scene-3.jpg"
+    ],
+    description: "Leave city life behind and build a new life by farming, fishing, making friends, and exploring the valley.",
+    shortDescription: "A relaxing farming game with plenty to discover.",
+    pros: ["Relaxing atmosphere", "Lots of activities", "Meaningful progression"],
+    cons: ["Days can feel short", "Some goals require repetitive tasks"],
+    thoughts: "A lovely option when you want to slow down, build a routine, and enjoy a cozy game at your own pace."
+  }
+];
+
+let activeCategory = "All";
+let currentGame = null;
+let currentImageIndex = 0;
+
+const gameGrid = document.getElementById("gameGrid");
+const searchInput = document.getElementById("searchInput");
+const reviewModal = document.getElementById("reviewModal");
+const galleryImage = document.getElementById("galleryImage");
+const galleryLabel = document.getElementById("galleryLabel");
+const galleryCounter = document.getElementById("galleryCounter");
+const galleryDots = document.getElementById("galleryDots");
+const zoomView = document.getElementById("zoomView");
+const zoomImage = document.getElementById("zoomImage");
+
+function ratingHTML(score) {
+  let stars = "";
+
+  for (let i = 1; i <= 5; i++) {
+    if (score >= i) {
+      stars += '<span>★</span>';
+    } else if (score >= i - 0.5) {
+      stars += '<span class="half">★</span>';
+    } else {
+      stars += '<span style="color:#c5d8ee;">★</span>';
+    }
+  }
+
+  return `
+    <div class="rating-row">
+      <span class="rating-stars" aria-label="${score} out of 5 stars">${stars}</span>
+      <span class="rating-number">${score.toFixed(1)}/5</span>
+    </div>
+  `;
+}
+
+function renderGames() {
+  const keyword = searchInput.value.trim().toLowerCase();
+
+  const filteredGames = games.filter(game => {
+    const matchesSearch =
+      game.name.toLowerCase().includes(keyword) ||
+      game.genre.toLowerCase().includes(keyword) ||
+      game.description.toLowerCase().includes(keyword);
+
+    const matchesCategory =
+      activeCategory === "All" ||
+      game.categories.includes(activeCategory);
+
+    return matchesSearch && matchesCategory;
+  });
+
+  if (filteredGames.length === 0) {
+    gameGrid.innerHTML = `
+      <div class="no-results">
+        <h3>No games found ✿</h3>
+        <p>Try another game name or category.</p>
+      </div>
+    `;
+    return;
+  }
+
+  gameGrid.innerHTML = filteredGames.map(game => `
+    <article class="game-card">
+      <div class="cover-wrap">
+        <img
+          src="${game.cover}"
+          alt="${game.name} cover"
+          loading="lazy"
+          onerror="this.onerror=null;this.src='';this.alt='Cover image not added yet';this.style.display='none';"
+        >
+        <span class="score-badge">★ ${game.score.toFixed(1)}/5</span>
+      </div>
+
+      <div class="card-content">
+        <h3>${game.name}</h3>
+        <div class="game-genre">${game.genre}</div>
+
+        ${ratingHTML(game.score)}
+
+        <p class="game-description">${game.shortDescription}</p>
+
+        <button
+          class="review-button"
+          type="button"
+          onclick="openReview('${game.id}')"
+        >
+          View Review →
         </button>
       </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-panel">
-        <h1>Find Your Next Game ✿</h1>
-        <p>
-          พื้นที่รีวิวเกมในแบบของ BaiiSelf
-          รวมเกมที่น่าสนใจ ความประทับใจ ข้อดี และสิ่งที่ควรรู้ก่อนเริ่มเล่น
-        </p>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-heading">
-        <h2>Explore Games</h2>
-        <span id="gameCount"></span>
-      </div>
-
-      <div class="filters">
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="ค้นหาชื่อเกม..."
-          aria-label="ค้นหาชื่อเกม"
-        >
-        <select id="categoryFilter" aria-label="เลือกหมวดหมู่">
-          <option value="all">ทุกหมวดหมู่</option>
-          <option value="Action RPG">Action RPG</option>
-          <option value="Adventure">Adventure</option>
-          <option value="Sandbox">Sandbox</option>
-          <option value="Rhythm">Rhythm</option>
-          <option value="Simulation">Simulation</option>
-        </select>
-      </div>
-
-      <div class="game-grid" id="gameGrid"></div>
-    </section>
-  </main>
-
-  <footer>
-    BaiiSelf | Game Review Hub ✿ Made with love for games
-  </footer>
-
-  <!-- Review modal -->
-  <div class="modal" id="reviewModal" role="dialog"
-       aria-modal="true" aria-label="รายละเอียดรีวิวเกม">
-    <div class="modal-content">
-      <button class="close-button" id="closeModal"
-              aria-label="ปิดรีวิว" type="button">×</button>
-
-      <h2 class="review-title" id="reviewTitle"></h2>
-
-      <div class="review-meta">
-        <span id="reviewCategory"></span>
-        <div id="reviewRating"></div>
-      </div>
-
-      <div class="gallery">
-        <span class="gallery-label" id="galleryLabel">Cover</span>
-        <img id="galleryImage" src="" alt="ภาพเกม"
-             title="คลิกเพื่อขยายภาพ">
-
-        <button class="gallery-arrow prev" id="prevImage"
-                aria-label="ภาพก่อนหน้า" type="button">‹</button>
-        <button class="gallery-arrow next" id="nextImage"
-                aria-label="ภาพถัดไป" type="button">›</button>
-      </div>
-
-      <div class="gallery-footer">
-        <span class="image-count" id="imageCount"></span>
-        <div class="gallery-dots" id="galleryDots"></div>
-      </div>
-
-      <p class="review-description" id="reviewDescription"></p>
-
-      <h3>Pros</h3>
-      <ul id="reviewPros"></ul>
-
-      <h3>Cons</h3>
-      <ul id="reviewCons"></ul>
-
-      <h3>เหมาะสำหรับใคร?</h3>
-      <p class="review-description" id="reviewAudience"></p>
-    </div>
-  </div>
-
-  <!-- Zoom image -->
-  <div class="zoom-overlay" id="zoomOverlay" aria-label="ภาพขยาย">
-    <img id="zoomImage" src="" alt="ภาพเกมขยาย">
-  </div>
-
-  <script>
-    /*
-      คะแนนตัวอย่าง 0–5 ดาว
-      เปลี่ยนค่า score ของแต่ละเกมได้ตามต้องการ
-    */
-    const games = [
-      {
-        name: "Elden Ring",
-        category: "Action RPG",
-        score: 4.5,
-        folder: "images/elden-ring",
-        cover: "cover.jpg",
-        screenshots: ["scene-1.jpg", "scene-2.jpg", "scene-3.jpg"],
-        description:
-          "เกม Action RPG ในโลกแฟนตาซีขนาดใหญ่ สำรวจดินแดน ต่อสู้กับศัตรู และค้นพบเรื่องราวผ่านโลกของเกม",
-        pros: [
-          "โลกกว้างและมีอะไรให้สำรวจ",
-          "การต่อสู้ท้าทาย",
-          "มีอิสระในการพัฒนาตัวละคร"
-        ],
-        cons: [
-          "ความยากอาจไม่เหมาะกับทุกคน",
-          "อาจต้องใช้เวลาเรียนรู้ระบบเกม"
-        ],
-        audience: "คนที่ชอบเกม RPG โลกแฟนตาซี และความท้าทาย"
-      },
-      {
-        name: "Genshin Impact",
-        category: "Action RPG",
-        score: 4.5,
-        folder: "images/genshin impact",
-        cover: "genshin-impact-cover.jpg",
-        screenshots: ["scene-1.jpg", "scene-2.jpg", "scene-3.jpg"],
-        description:
-          "เกม Open-world RPG ที่มีตัวละครหลากหลาย ธาตุสำหรับการต่อสู้ และโลกให้เดินทางสำรวจ",
-        pros: [
-          "โลกสวยและมีรายละเอียด",
-          "ตัวละครมีเอกลักษณ์",
-          "สำรวจโลกได้อย่างอิสระ"
-        ],
-        cons: [
-          "การพัฒนาตัวละครใช้เวลา",
-          "มีระบบสุ่มตัวละคร"
-        ],
-        audience: "คนที่ชอบสำรวจโลก แฟนตาซี และสะสมตัวละคร"
-      },
-      {
-        name: "Minecraft",
-        category: "Sandbox",
-        score: 5,
-        folder: "images/minecraft",
-        cover: "cover.jpg",
-        screenshots: ["scene-1.jpg", "scene-2.jpg", "scene-3.jpg"],
-        description:
-          "เกม Sandbox ที่ให้สร้างสิ่งต่าง ๆ สำรวจโลก และเล่นตามสไตล์ของตัวเอง",
-        pros: [
-          "มีอิสระในการเล่นสูง",
-          "สร้างสรรค์ได้หลากหลาย",
-          "เล่นกับเพื่อนได้"
-        ],
-        cons: [
-          "ผู้เล่นใหม่อาจไม่รู้ว่าจะเริ่มจากตรงไหน",
-          "ภาพกราฟิกเป็นสไตล์เฉพาะตัว"
-        ],
-        audience: "คนที่ชอบสร้าง สำรวจ และเล่นอย่างอิสระ"
-      },
-      {
-        name: "Wuthering Waves",
-        category: "Action RPG",
-        score: 4.5,
-        folder: "images/wuthering waves",
-        cover: "wuthering-waves-cover.jpg",
-        screenshots: ["scene-1.jpg", "scene-2.jpg", "scene-3.jpg"],
-        description:
-          "เกม Action RPG ที่เน้นการต่อสู้แบบรวดเร็ว การหลบหลีก และการสำรวจโลก",
-        pros: [
-          "ระบบต่อสู้ลื่นไหล",
-          "ตัวละครมีสไตล์",
-          "มีพื้นที่ให้สำรวจ"
-        ],
-        cons: [
-          "ระบบบางส่วนต้องใช้เวลาเรียนรู้",
-          "การพัฒนาตัวละครต้องใช้ทรัพยากร"
-        ],
-        audience: "คนที่ชอบเกมแอ็กชัน จังหวะต่อสู้รวดเร็ว และสำรวจโลก"
-      },
-      {
-        name: "Stardew Valley",
-        category: "Simulation",
-        score: 4.5,
-        folder: "images/stardew-valley",
-        cover: "cover.jpg",
-        screenshots: ["scene-1.jpg", "scene-2.jpg", "scene-3.jpg"],
-        description:
-          "เกมจำลองการใช้ชีวิตในฟาร์ม ปลูกผัก เลี้ยงสัตว์ ตกปลา และสร้างความสัมพันธ์กับชาวเมือง",
-        pros: [
-          "เล่นได้เรื่อย ๆ ตามจังหวะของตัวเอง",
-          "กิจกรรมหลากหลาย",
-          "เหมาะกับการเล่นเพื่อผ่อนคลาย"
-        ],
-        cons: [
-          "ช่วงแรกอาจต้องเรียนรู้หลายระบบ",
-          "ภาพพิกเซลอาจไม่ใช่สไตล์ที่ทุกคนชอบ"
-        ],
-        audience: "คนที่ชอบเกมสบาย ๆ การทำฟาร์ม และการใช้ชีวิต"
-      }
-    ];
-
-    const gameGrid = document.getElementById("gameGrid");
-    const searchInput = document.getElementById("searchInput");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const modal = document.getElementById("reviewModal");
-
-    let currentGame = null;
-    let currentImageIndex = 0;
-
-    // สร้างดาวเต็ม ดาวครึ่ง และดาวว่าง
-    function renderRating(score) {
-      const safeScore = Math.max(0, Math.min(5, Number(score) || 0));
-      const fullStars = Math.floor(safeScore);
-      const hasHalfStar = safeScore - fullStars >= 0.25 &&
-                          safeScore - fullStars < 0.75;
-      const roundedFullStars = safeScore - fullStars >= 0.75
-        ? fullStars + 1
-        : fullStars;
-      const emptyStars = 5 - roundedFullStars - (hasHalfStar ? 1 : 0);
-
-      let starsHTML = "";
-
-      for (let i = 0; i < roundedFullStars; i++) {
-        starsHTML += '<span class="star">★</span>';
-      }
-
-      if (hasHalfStar) {
-        starsHTML += '<span class="star half">★</span>';
-      }
-
-      for (let i = 0; i < emptyStars; i++) {
-        starsHTML += '<span class="star" style="color:#c8d2df">☆</span>';
-      }
-
-      return `
-        <div class="rating" aria-label="คะแนน ${safeScore} จาก 5">
-          <span class="stars">${starsHTML}</span>
-          <span class="rating-number">${safeScore.toFixed(1)}/5</span>
-        </div>
-      `;
-    }
-
-    function renderGames() {
-      const query = searchInput.value.trim().toLowerCase();
-      const category = categoryFilter.value;
-
-      const filtered = games.filter(game => {
-        const matchesName = game.name.toLowerCase().includes(query);
-        const matchesCategory =
-          category === "all" || game.category === category;
-
-        return matchesName && matchesCategory;
-      });
-
-      document.getElementById("gameCount").textContent =
-        `${filtered.length} games`;
-
-      if (!filtered.length) {
-        gameGrid.innerHTML =
-          '<div class="empty">ไม่พบเกมที่ค้นหา ลองค้นหาด้วยชื่ออื่น</div>';
-        return;
-      }
-
-      gameGrid.innerHTML = filtered.map(game => `
-        <article class="game-card">
-          <div class="cover-wrap">
-            <img
-              src="${escapeHTML(game.folder + "/" + game.cover)}"
-              alt="${escapeHTML(game.name)} cover"
-              loading="lazy"
-              onerror="this.style.display='none'"
-            >
-            <span class="category-badge">
-              ${escapeHTML(game.category)}
-            </span>
-          </div>
-
-          <div class="game-info">
-            <h3>${escapeHTML(game.name)}</h3>
-            <p>${escapeHTML(game.description)}</p>
-            ${renderRating(game.score)}
-            <button
-              class="review-button"
-              type="button"
-              data-review="${escapeHTML(game.name)}"
-            >
-              View Review →
-            </button>
-          </div>
-        </article>
-      `).join("");
-    }
-
-    // ป้องกันข้อความจากข้อมูลเกมถูกตีความเป็น HTML
-    function escapeHTML(value) {
-      return String(value).replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[char]);
-    }
-
-    function openReview(name) {
-      currentGame = games.find(game => game.name === name);
-      if (!currentGame) return;
-
-      currentImageIndex = 0;
-
-      document.getElementById("reviewTitle").textContent =
-        currentGame.name;
-
-      document.getElementById("reviewCategory").textContent =
-        currentGame.category;
-
-      document.getElementById("reviewRating").innerHTML =
-        renderRating(currentGame.score);
-
-      document.getElementById("reviewDescription").textContent =
-        currentGame.description;
-
-      document.getElementById("reviewAudience").textContent =
-        currentGame.audience;
-
-      document.getElementById("reviewPros").innerHTML =
-        currentGame.pros.map(item =>
-          `<li>${escapeHTML(item)}</li>`
-        ).join("");
-
-      document.getElementById("reviewCons").innerHTML =
-        currentGame.cons.map(item =>
-          `<li>${escapeHTML(item)}</li>`
-        ).join("");
-
-      renderGallery();
-      modal.classList.add("open");
-      document.body.style.overflow = "hidden";
-    }
-
-    // ลำดับภาพ: Cover ก่อน แล้วตามด้วย Screenshot 1–3
-    function getGalleryImages() {
-      return [
-        {
-          src: `${currentGame.folder}/${currentGame.cover}`,
-          label: "Cover"
-        },
-        ...currentGame.screenshots.map((image, index) => ({
-          src: `${currentGame.folder}/${image}`,
-          label: `Screenshot ${index + 1}`
-        }))
-      ];
-    }
-
-    function renderGallery() {
-      const images = getGalleryImages();
-      const image = images[currentImageIndex];
-
-      const galleryImage = document.getElementById("galleryImage");
-      galleryImage.src = image.src;
-      galleryImage.alt = `${currentGame.name} - ${image.label}`;
-
-      document.getElementById("galleryLabel").textContent = image.label;
-
-      document.getElementById("imageCount").textContent =
-        `${currentImageIndex + 1} / ${images.length}`;
-
-      document.getElementById("galleryDots").innerHTML =
-        images.map((item, index) => `
-          <button
-            class="dot ${index === currentImageIndex ? "active" : ""}"
-            type="button"
-            data-image="${index}"
-            aria-label="ดู${escapeHTML(item.label)}"
-            title="${escapeHTML(item.label)}"
-          ></button>
-        `).join("");
-    }
-
-    function changeImage(direction) {
-      if (!currentGame) return;
-
-      const images = getGalleryImages();
-      currentImageIndex =
-        (currentImageIndex + direction + images.length) % images.length;
-
-      renderGallery();
-    }
-
-    function closeReview() {
-      modal.classList.remove("open");
-      document.body.style.overflow = "";
-      currentGame = null;
-    }
-
-    gameGrid.addEventListener("click", event => {
-      const button = event.target.closest("[data-review]");
-      if (button) openReview(button.dataset.review);
-    });
-
-    document.getElementById("prevImage").addEventListener("click", () => {
-      changeImage(-1);
-    });
-
-    document.getElementById("nextImage").addEventListener("click", () => {
-      changeImage(1);
-    });
-
-    document.getElementById("galleryDots").addEventListener("click", event => {
-      const button = event.target.closest("[data-image]");
-      if (!button) return;
-
-      currentImageIndex = Number(button.dataset.image);
-      renderGallery();
-    });
-
-    document.getElementById("closeModal").addEventListener("click", closeReview);
-
-    modal.addEventListener("click", event => {
-      if (event.target === modal) closeReview();
-    });
-
-    // คลิกภาพเพื่อขยาย
-    document.getElementById("galleryImage").addEventListener("click", () => {
-      const image = document.getElementById("galleryImage");
-      if (!image.src) return;
-
-      document.getElementById("zoomImage").src = image.src;
-      document.getElementById("zoomOverlay").classList.add("open");
-    });
-
-    document.getElementById("zoomOverlay").addEventListener("click", () => {
-      document.getElementById("zoomOverlay").classList.remove("open");
-    });
-
-    // รองรับปุ่มลูกศรและ Escape
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        document.getElementById("zoomOverlay").classList.remove("open");
-        closeReview();
-      }
-
-      if (modal.classList.contains("open")) {
-        if (event.key === "ArrowLeft") changeImage(-1);
-        if (event.key === "ArrowRight") changeImage(1);
-      }
-    });
-
-    searchInput.addEventListener("input", renderGames);
-    categoryFilter.addEventListener("change", renderGames);
-
-    // Dark Mode พร้อมจำสถานะขณะเปิดหน้าเว็บนี้
-    const themeToggle = document.getElementById("themeToggle");
-
-    themeToggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      const isDark = document.body.classList.contains("dark");
-
-      themeToggle.textContent = isDark ? "☀ Light Mode" : "☾ Dark Mode";
+    </article>
+  `).join("");
+}
+
+function getGalleryImages(game) {
+  return [
+    { src: game.cover, label: "Cover" },
+    { src: game.screenshots[0], label: "Screenshot 1" },
+    { src: game.screenshots[1], label: "Screenshot 2" },
+    { src: game.screenshots[2], label: "Screenshot 3" }
+  ];
+}
+
+function openReview(gameId) {
+  currentGame = games.find(game => game.id === gameId);
+
+  if (!currentGame) return;
+
+  currentImageIndex = 0;
+
+  document.getElementById("modalTitle").textContent = currentGame.name;
+  document.getElementById("modalGenre").textContent = currentGame.genre;
+  document.getElementById("modalRating").innerHTML = ratingHTML(currentGame.score);
+  document.getElementById("modalDescription").textContent = currentGame.description;
+  document.getElementById("modalThoughts").textContent = currentGame.thoughts;
+
+  document.getElementById("modalPros").innerHTML =
+    currentGame.pros.map(item => `<li>${item}</li>`).join("");
+
+  document.getElementById("modalCons").innerHTML =
+    currentGame.cons.map(item => `<li>${item}</li>`).join("");
+
+  renderGallery();
+
+  reviewModal.classList.add("open");
+  reviewModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function renderGallery() {
+  if (!currentGame) return;
+
+  const images = getGalleryImages(currentGame);
+  const image = images[currentImageIndex];
+
+  galleryImage.src = image.src;
+  galleryImage.alt = `${currentGame.name} - ${image.label}`;
+  galleryLabel.textContent = image.label;
+  galleryCounter.textContent = `${currentImageIndex + 1} / ${images.length}`;
+
+  galleryDots.innerHTML = images.map((item, index) => `
+    <button
+      type="button"
+      class="gallery-dot ${index === currentImageIndex ? "active" : ""}"
+      aria-label="Show ${item.label}"
+      aria-current="${index === currentImageIndex ? "true" : "false"}"
+      onclick="goToImage(${index})"
+    ></button>
+  `).join("");
+
+  galleryImage.onerror = function() {
+    this.onerror = null;
+    this.alt = `${image.label} not found. Check the image path in GitHub.`;
+    this.removeAttribute("src");
+    galleryLabel.textContent = `${image.label} — image not found`;
+  };
+}
+
+function goToImage(index) {
+  const images = getGalleryImages(currentGame);
+  currentImageIndex = (index + images.length) % images.length;
+  renderGallery();
+}
+
+function previousImage() {
+  goToImage(currentImageIndex - 1);
+}
+
+function nextImage() {
+  goToImage(currentImageIndex + 1);
+}
+
+function closeReview() {
+  reviewModal.classList.remove("open");
+  reviewModal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+function openZoom() {
+  if (!galleryImage.src) return;
+
+  zoomImage.src = galleryImage.src;
+  zoomView.classList.add("open");
+}
+
+function closeZoom() {
+  zoomView.classList.remove("open");
+  zoomImage.src = "";
+}
+
+document.getElementById("prevImage").addEventListener("click", previousImage);
+document.getElementById("nextImage").addEventListener("click", nextImage);
+document.getElementById("closeModal").addEventListener("click", closeReview);
+document.getElementById("zoomClose").addEventListener("click", closeZoom);
+galleryImage.addEventListener("click", openZoom);
+
+reviewModal.addEventListener("click", event => {
+  if (event.target === reviewModal) closeReview();
+});
+
+zoomView.addEventListener("click", event => {
+  if (event.target === zoomView || event.target === zoomImage) closeZoom();
+});
+
+searchInput.addEventListener("input", renderGames);
+
+document.querySelectorAll(".category-button").forEach(button => {
+  button.addEventListener("click", () => {
+    activeCategory = button.dataset.category;
+
+    document.querySelectorAll(".category-button").forEach(item => {
+      item.classList.toggle("active", item === button);
     });
 
     renderGames();
-  </script>
+  });
+});
+
+document.getElementById("themeButton").addEventListener("click", () => {
+  const isDark = document.body.classList.toggle("dark");
+  document.getElementById("themeButton").textContent =
+    isDark ? "☀ Light Mode" : "☾ Dark Mode";
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    if (zoomView.classList.contains("open")) {
+      closeZoom();
+    } else {
+      closeReview();
+    }
+  }
+
+  if (reviewModal.classList.contains("open") &&
+      !zoomView.classList.contains("open")) {
+    if (event.key === "ArrowLeft") previousImage();
+    if (event.key === "ArrowRight") nextImage();
+  }
+});
+
+renderGames();
+</script>
+
 </body>
 </html>
